@@ -1,1 +1,69 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Vocabulary Quiz</title>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            margin: 20px;\n            padding: 0;\n            background-color: #f4f4f4;\n        }\n        .quiz-container {\n            background: white;\n            padding: 20px;\n            border-radius: 5px;\n            box-shadow: 0 2px 10px rgba(0,0,0,0.1);\n        }\n        .question {\n            font-size: 20px;\n        }\n        .options {\n            margin: 10px 0;\n        }\n        .option {\n            margin: 5px 0;\n            padding: 10px;\n            background: #e2e2e2;\n            cursor: pointer;\n            border-radius: 3px;\n        }\n        .option:hover {\n            background: #d1d1d1;\n        }\n    </style>\n</head>\n<body>\n    <div class="quiz-container">\n        <h1>Vocabulary Quiz</h1>\n        <div class="question">What is the meaning of "ubiquitous"?</div>\n        <div class="options">\n            <div class="option">A) Rare</div>\n            <div class="option">B) Everywhere</div>\n            <div class="option">C) Uncommon</div>\n            <div class="option">D) Unusual</div>\n        </div>\n        <button onclick="checkAnswer()">Submit</button>\n        <div id="result"></div>\n    </div>\n    <script>\n        function checkAnswer() {\n            const options = document.querySelectorAll('.option');\n            let selected;\n            options.forEach(option => {\n                if (option.style.backgroundColor === 'rgb(209, 209, 209)') {\n                    selected = option.textContent;\n                }\n            });\n            const result = document.getElementById('result');\n            if (selected === 'B) Everywhere') {\n                result.textContent = 'Correct!';\n            } else {\n                result.textContent = 'Wrong answer!';\n            }\n        }\n    </script>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Vocabulary Quiz</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Vocabulary Quiz PRO</h1>
+        <div class="quiz-content">
+            <div id="question"></div>
+            <div class="options">
+                <button class="option" onclick="checkAnswer(this)"></button>
+                <button class="option" onclick="checkAnswer(this)"></button>
+                <button class="option" onclick="checkAnswer(this)"></button>
+                <button class="option" onclick="checkAnswer(this)"></button>
+            </div>
+            <button id="next" onclick="nextQuestion()">Next</button>
+        </div>
+        <audio id="sound-effect" src="sound.mp3"></audio>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+<script>
+let questions = [
+    { question: "What is the synonym of 'happy'?", options: ["sad", "joyful", "angry", "bored"], answer: 1 },
+    { question: "What does 'benevolent' mean?", options: ["kind", "mean", "greedy", "selfish"], answer: 0 },
+    { question: "What is the opposite of 'hot'?", options: ["cold", "warm", "cool", "boiling"], answer: 0 }
+];
+
+let currentQuestionIndex = 0;
+function loadQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    document.getElementById('question').innerText = currentQuestion.question;
+    const options = document.querySelectorAll('.option');
+    options.forEach((option, index) => {
+        option.innerText = currentQuestion.options[index];
+    });
+}
+
+function checkAnswer(selectedOption) {
+    const index = Array.from(document.querySelectorAll('.option')).indexOf(selectedOption);
+    if (index === questions[currentQuestionIndex].answer) {
+        document.getElementById('sound-effect').play();
+        alert('Correct!');
+    } else {
+        alert('Wrong Answer!');
+    }
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        alert('Quiz Finished!');
+    }
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+}
+
+// Load the first question when the page loads
+window.onload = loadQuestion;
+</script>
